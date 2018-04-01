@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/inputs.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<style>
+</style>
+</head>
+<body>
+	
+	<form method="post" action="http://localhost:8080/idp/saml/config">
+		<div class="col-3 input-effect">
+			<label>Application Name</label> 
+			<input class="effect-16" name="name" type="text" placeholder="" /><span class="focus-border"></span>
+		</div>
+		
+		<div class="col-3">
+			<button type="submit">Enviar</button>
+		</div>
+	</form>
+	
+</body>
+</html>

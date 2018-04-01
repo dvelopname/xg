@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/inputs.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<style>
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript"></script>
+</head>
+<body>
+	
+	<form method="post" id="samlAppConfig" action="http://localhost:8080/idp/saml/config/advanced">
+		<div class="col-3 input-effect">
+			<label>Application Name</label> 
+			<input class="effect-16" th:value="${name}" type="text" placeholder="" disabled="true"/><span class="focus-border"></span>
+			<input class="effect-16" th:value="${clientId}" type="hidden" name="clientId" placeholder=""/>
+		</div>
+		
+		<div class="col-3 input-effect">
+			<label>Metadata URL</label> 
+			<input class="effect-16" th:value="${issuerUrl}" type="text" placeholder="" disabled="true"/><span class="focus-border"></span>
+		</div>
+		
+		<div class="col-3 input-effect">
+			<label>SSO URL</label> 
+			<input class="effect-16" th:value="${endpointSsoUrl}" type="text" placeholder="" disabled="true"/><span class="focus-border"></span>
+		</div>
+		
+		<div class="col-3 input-effect">
+			<label>SLO URL</label> 
+			<input class="effect-16" th:value="${endpointSloUrl}" type="text" placeholder="" disabled="true"/><span class="focus-border"></span>
+		</div>
+		
+		<div class="col-3">
+			<label><b>Configure SAML 2.0 Application</b></label>
+			<label class="container" style="float:left">
+		  		<input type="checkbox" name="configureApplicationEnabled" />
+		  		<span class="checkmark" style="float:right"></span>
+			</label>
+		</div>
+		
+		<br />
+		<div>
+			<div class="col-3">
+				<h3>Configure Application</h3>
+			</div>
+			
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="radio" name="entityIDEnabled" checked="checked"/>
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				EntityID *
+				<input class="effect-16" name="entityID" th:value="${entityID}" type="text" placeholder=""/>
+				<span class="focus-border"></span>
+			</div>
+	
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="radio" name="assertionConsumerServiceEnabled" checked="checked"/>
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				Assertion Consumer Service Endpoint (HTTP-POST) *
+				<input class="effect-16" name="assertionConsumerService" th:value="${assertionConsumerService}" type="text" placeholder="" />
+				<span class="focus-border"></span>
+			</div>
+		
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="singleLogoutServiceEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				<label>Single Logout Service Endpoint (HTTP-REDIRECT)</label> 
+				<input class="effect-16" name="singleLogoutService" type="text" th:value="${singleLogoutService}" placeholder="" />
+				<span class="focus-border"></span>
+			</div>
+			
+			<div class="col-3 input-effect">	
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="audienceEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				Audience
+				<input class="effect-16" name="audience" type="text" th:value="${audience}" placeholder=""/><span class="focus-border"></span>
+			</div>
+			
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="recipientEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				Recipient
+				<input class="effect-16" name="recipient" type="text" th:value="${recipient}" placeholder=""/><span class="focus-border"></span>
+			</div>
+			
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="destinationEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				Destination
+				<input class="effect-16" name="destination" type="text" th:value="${destination}" placeholder=""/><span class="focus-border"></span>
+			</div>
+			
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="relayStateEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				RelayState
+				<input class="effect-16" name="relayState" type="text" th:value="${relayState}" placeholder=""/><span class="focus-border"></span>
+			</div>
+			
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="nameIdFormatEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				<label>NameId Format</label> <br /><br />
+				<select style="max-width:87%;" name="nameIdFormat" th:value="${nameIdFormat}">
+					<option>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</option>
+					<option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option>
+					<option>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</option>
+					<option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>
+					<option>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</option>
+					<option>urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName</option>
+					<option>urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos</option>
+					<option>urn:oasis:names:tc:SAML:2.0:nameid-format:entity</option>
+				</select> 
+				<span class="focus-border"></span>
+			</div>
+			
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="authnRequestSignedEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				<label>AuthnRequestSigned</label> <br /><br />
+				<select style="max-width:87%;" name="authnRequestSigned" th:value="${authnRequestSigned}" >
+					<option>False</option>
+					<option>True</option>
+				</select> 
+				<span class="focus-border"></span>
+			</div>
+			
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="wantAssertionsSignedEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				<label>WantAssertionsSigned</label> <br /><br />
+				<select style="max-width:87%;" name="wantAssertionsSigned" th:value="${wantAssertionsSigned}">
+					<option>False</option>
+					<option>True</option>
+				</select> 
+				<span class="focus-border"></span>
+			</div>
+			
+			<div class="col-3 input-effect">
+				<label class="container" style="float:right">
+			  		<input type="checkbox" name="x509SpCertEnabled" />
+			  		<span class="checkmark" style="float:right"></span>
+				</label>
+				<label>SP X.509 cert (same cert for sign/encrypt)</label> <br /><br />
+				<textarea rows="15" cols="71" name="x509SpCert" th:value="${x509SpCert}"></textarea>
+				<span class="focus-border"></span>
+			</div>
+			<div class="col-3">
+				<button type="submit">Enviar</button>
+			</div>
+		</div>
+	</form>
+	
+</body>
+</html>

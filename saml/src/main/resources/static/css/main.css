@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Damion|Muli:400,600');
+body{
+  font-family: 'Muli', sans-serif;
+}
+
+.box-login {
+	margin-top: 15%;
+}
+
+.simple-margin {
+	margin-top: 1%;
+}
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

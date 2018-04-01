@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/inputs.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<style>
+</style>
+</head>
+<body>
+
+	<div class="col-3 input-effect">
+		<label>EntityId</label> 
+		<input 
+			class="effect-16" type="text"
+			placeholder=""> <span class="focus-border"></span>
+	</div>
+
+	<div class="col-3 input-effect">
+		<label>Attribute Consume Service Endpoint (HTTP-POST)</label> 
+		<input class="effect-16" type="text" placeholder="">
+		<span class="focus-border"></span>
+	</div>
+
+	<div class="col-3 input-effect">
+		<label>Single Logout Service Endpoint (HTTP-REDIRECT)</label> 
+		<input class="effect-16" type="text" placeholder="">
+		<span class="focus-border"></span>
+	</div>
+	
+	<div class="col-3 input-effect">
+		<label>NameId Format</label> <br /><br />
+		<select>
+			<option>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</option>
+			<option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option>
+			<option>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</option>
+			<option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>
+			<option>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</option>
+			<option>urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName</option>
+			<option>urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos</option>
+			<option>urn:oasis:names:tc:SAML:2.0:nameid-format:entity</option>
+		</select> 
+		<span class="focus-border"></span>
+	</div>
+	
+	<div class="col-3 input-effect">
+		<label>SP X.509 cert (same cert for sign/encrypt)</label>  <br/><br />
+		<textarea rows="15" cols="71"></textarea>
+		<!-- <input class="effect-16" type="textarea" placeholder="">-->
+		<span class="focus-border"></span>
+	</div>
+	
+</body>
+</html>
