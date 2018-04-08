@@ -9,7 +9,9 @@ GUIDES:
     
     -   https://www.oasis-open.org/committees/download.php/35711/sstc-saml-core-errata-2.0-wd-06-diff.pdf
     
-    - https://support.secureauth.com/hc/en-us/articles/229711267-Encrypt-SAML-Assertion
+    -   https://support.secureauth.com/hc/en-us/articles/229711267-Encrypt-SAML-Assertion
+    
+    -   https://developers.onelogin.com/saml/examples/response
     
 
 1) An unsigned SAML Response
