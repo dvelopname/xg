@@ -1,10 +1,16 @@
 GUIDES: 
     -   http://saml.xml.org/saml-specifications
+    
     -   http://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf
+    
     -   https://www.oasis-open.org/committees/download.php/35391/sstc-saml-metadata-errata-2.0-wd-04-diff.pdf
+    
     -   http://docs.oasis-open.org/security/saml/v2.0/saml-authn-context-2.0-os.pdf
+    
     -   https://www.oasis-open.org/committees/download.php/35711/sstc-saml-core-errata-2.0-wd-06-diff.pdf
-
+    
+    - https://support.secureauth.com/hc/en-us/articles/229711267-Encrypt-SAML-Assertion
+    
 
 1) An unsigned SAML Response
     - with an unsigned Assertion
