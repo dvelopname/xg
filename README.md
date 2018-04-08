@@ -1,4 +1,7 @@
 GUIDES: 
+
+    -   https://www.oasis-open.org/committees/download.php/51890/SAML%20MD%20simplified%20overview.pdf
+    
     -   http://saml.xml.org/saml-specifications
     
     -   http://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf
