@@ -1,8 +1,34 @@
 package br.com.c4ll.saml.encode;
 
+import java.io.StringWriter;
+import java.rmi.server.UID;
+import java.util.UUID;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.opensaml.DefaultBootstrap;
+import org.opensaml.common.SAMLVersion;
 import org.opensaml.common.xml.SAMLConstants;
+import org.opensaml.saml2.core.AuthnRequest;
+import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.NameIDType;
+import org.opensaml.saml2.core.Response;
+import org.opensaml.saml2.core.Status;
+import org.opensaml.saml2.core.StatusCode;
+import org.opensaml.saml2.core.impl.AssertionBuilder;
+import org.opensaml.saml2.core.impl.IssuerBuilder;
+import org.opensaml.saml2.core.impl.ResponseBuilder;
+import org.opensaml.saml2.core.impl.ResponseMarshaller;
+import org.opensaml.saml2.core.impl.StatusBuilder;
+import org.opensaml.saml2.core.impl.StatusCodeBuilder;
 import org.opensaml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml2.metadata.KeyDescriptor;
@@ -31,8 +57,131 @@ import org.w3c.dom.Element;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 
+import br.com.c4ll.saml.config.SamlAppConfig;
+
 @Component
 public class SamlEncoder {
+	
+	
+	private boolean isNullOrEmpty(Object object) {
+		return object == null || object.toString().trim().length() == 0;
+	}
+	
+	private Response createSamlDefaultResponse(AuthnRequest request, SamlAppConfig app) {
+		final ResponseBuilder responseBuilder = new ResponseBuilder();
+		Response response = responseBuilder.buildObject();
+		response.setID(UUID.randomUUID().toString()); 
+		response.setVersion(SAMLVersion.VERSION_20);
+		response.setInResponseTo(request.getID());
+		
+		final DateTime date = new DateTime().now();
+		response.setIssueInstant(date);
+		
+		final String destinationValue = !isNullOrEmpty(app.getDetail().getDestination()) 
+				? app.getDetail().getDestination()
+				: app.getDetail().getEntityID();
+		
+		response.setDestination(destinationValue);
+		
+		final String issuerValue = app.getDetail().getEntityID();
+		
+		IssuerBuilder issuerBuilder = new IssuerBuilder();
+		Issuer issuer = issuerBuilder.buildObject();
+		issuer.setValue(issuerValue);
+		
+		response.setIssuer(issuer);
+		
+		// ADD CREDENTIALS (SIGNATURE NA RESPONSE) ?? ACHO QUE SIM
+		
+		boolean versionSenderIsNotSuported = false;
+		boolean protocolBindingNotKnown = false;
+		boolean requesterSendRequestWithError = false;
+		boolean authnLoginSucess = true;
+		
+		StatusBuilder statusBuilder = new StatusBuilder();
+		Status status = statusBuilder.buildObject();
+		
+		StatusCodeBuilder statusCodeBuilder = new StatusCodeBuilder();
+		StatusCode statusCode = statusCodeBuilder.buildObject();
+
+		if(versionSenderIsNotSuported) { // Versão não suportada
+			statusCode.setValue(StatusCode.VERSION_MISMATCH_URI);
+		} else if(protocolBindingNotKnown) { // Protocolo binding não suportado (ou não conhecido, vem um valor diferente)
+			statusCode.setValue(StatusCode.UNSUPPORTED_BINDING_URI);
+		} else if(requesterSendRequestWithError) { // Enviou, por exemplo, com destination inválido
+			statusCode.setValue(StatusCode.REQUESTER_URI);
+		} else if(!authnLoginSucess) { // Falha no login
+			statusCode.setValue(StatusCode.AUTHN_FAILED_URI);
+		} else { // Sucesso no login
+			statusCode.setValue(StatusCode.SUCCESS_URI);
+		}
+		
+		status.setStatusCode(statusCode);
+		response.setStatus(status);
+		
+		return response;
+	}
+	
+	public void createSamlResponseWith(AuthnRequest request, SamlAppConfig app) {
+		Response response = createSamlDefaultResponse(request, app);
+		
+	}
+	
+	
+	
+	public void createSamlResponse(AuthnRequest authnRequest, SamlAppConfig app) throws MarshallingException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError {
+
+//		1) An unsigned SAML Response
+//		    - with an unsigned Assertion
+//		    - with a signed Assertion
+//    
+//		    - with an encrypted Assertion
+//		    - with an encrypted signed Assertion
+//
+//    	2) An signed SAML Response
+//		    - with an unsigned Assertion
+//		    - with a signed Assertion
+//		    
+//		    - with an encrypted Assertion
+//		    - with an encrypted signed Assertion
+		
+		boolean signedSamlResponse = false;
+		boolean signedAssertionOfSamlResponse = false;
+		boolean encryptedAssertionOfSamlResponse = false;
+		
+		boolean signedAssertionOfAssertion = false;
+		boolean encryptedAssertionOfAssertion = false;
+		
+		// Inherited from samlp:StatusResponseType
+		
+		Response response = createSamlDefaultResponse(authnRequest, app);
+		
+		
+		// Validando a response (Se é StatusCode != Sucess) transformar em XML e enviar
+		if(!response.getStatus().getStatusCode().getValue().equals(StatusCode.SUCCESS_URI)) { // mudar dps
+			ResponseMarshaller responseMarshaller = new ResponseMarshaller();
+			Element marshall = responseMarshaller.marshall(response);
+			
+			TransformerFactory transformerFactory = TransformerFactory
+                    .newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(marshall);
+            StreamResult result = new StreamResult(new StringWriter());
+
+            transformer.transform(source, result);
+
+            String strObject = result.getWriter().toString();
+            
+			System.out.println(strObject);
+		}
+		
+		
+		// An unsigned SAML Response with an unsigned Assertion
+		if(!signedSamlResponse && !signedAssertionOfSamlResponse) {
+			
+		}
+			
+	}
 	
 	public String createIdpMetadata(final String tenantId, final String entityId) throws ConfigurationException, MarshallingException {
 		EntityDescriptor idpEntityDescriptor = createIDPEntityDescriptor(tenantId, entityId);
